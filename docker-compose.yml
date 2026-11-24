@@ -1,0 +1,16 @@
+services:
+  api:
+    build: ./backend
+    ports: ["8000:8000"]
+    environment:
+      DATABASE_URL: sqlite:////data/reliefchain.db
+      SIM_SPEED: ${SIM_SPEED:-1}
+    volumes: ["reliefchain-data:/data"]
+  web:
+    build: ./web
+    ports: ["3000:3000"]
+    environment:
+      VITE_API_URL: http://localhost:8000/api
+    depends_on: [api]
+volumes:
+  reliefchain-data:
